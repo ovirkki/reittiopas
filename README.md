@@ -1,8 +1,8 @@
 Backend: nodejs
 Frontend: html, jquery, javascript
 
-Käyttöohje:
-Käynnistä serveri "node <polku main.js tiedostoon>"
+Käyttöohje (oletus, että nodejs asennettuna):
+Käynnistä serveri "node " + polku main.js tiedostoon
 Avaa page.html
   - Syötä lähtöpaikka ja määränpää
   - Paina "Etsi reitti" -nappia
