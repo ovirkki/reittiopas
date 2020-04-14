@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+
+    function parseRoute(routeData) {
+        $("#route").empty();
+        console.log(JSON.stringify(routeData));
+        //clear #route
+        $.each(routeData, function(i, routeElement) {
+            var color = routeElement.line;
+            var $el = $("<p>" + routeElement.line + ": " + routeElement.start + " - " + routeElement.destination + "</p>");
+            $("#route").append($el);
+        });
+    }
+    $(document).ready(function(){
+      $.get("http://localhost:8080/stops", function(data, status){
+        console.log("Stops: " + JSON.stringify(data));
+        $.each(data, function(i, stopName) {
+          console.log(stopName);
+          $('#startStop').append($('<option></option>').val(stopName).html(stopName));
+          $('#destinationStop').append($('<option></option>').val(stopName).html(stopName));
+        });
+      });
+      $("#getRoute").click(function(){
+        console.log($('#startStop').val());
+        $.get("http://localhost:8080/", {start: $('#startStop').val(), destination: $('#destinationStop').val()}, function(data, status) {
+            parseRoute(data);
+        }).fail(function(err) {
+            $("#route").empty();
+            $("#route").append("<p> Haku epäonnistui syyllä: " + err.statusText + "</p>");
+        });
+      });
+    });
+</script>
+</head>
+<body>
+
+<div>
+    Valitse lähtöpysäkki
+    <select id="startStop">
+    </select>
+</div>
+<div>
+    Valitse määränpää
+    <select id="destinationStop">
+    </select>
+</div>
+
+<button id="getRoute">Etsi reitti</button>
+
+<div id="route"></div>
+
+</body>
+</html>
